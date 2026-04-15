@@ -1,4 +1,4 @@
-const BASE_URL = "https://development-internship-api.geopostenergy.com";
+const BASE_URL = "/api";
 
 export const getTeams = async () => {
   const response = await fetch(`${BASE_URL}/WorldCup/GetAllTeams`, {
