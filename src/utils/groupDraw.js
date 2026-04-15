@@ -1,6 +1,7 @@
 import { shuffleArray } from "./shuffle";
+import { generateMatchesForGroup } from "./matches";
 
-const createGroup = (teams) => {
+export const createGroups = (teams) => {
   const shuffleTeams = shuffleArray(teams);
 
   const groups = [];
@@ -11,8 +12,9 @@ const createGroup = (teams) => {
 
     groups.push({
       group: groupsNames[i],
-      teams: groupTeams
+      teams: groupTeams,
+      matches: generateMatchesForGroup(groupTeams)
     });
   }
   return groups;
-}
+};
