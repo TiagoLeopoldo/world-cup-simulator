@@ -39,6 +39,16 @@ function App() {
               </li>
             ))}
           </ul>
+
+          <h3>Tabela:</h3>
+          <ul>
+            {group.standings.map((teamStats, index) => (
+              <li key={teamStats.token}>
+                {index + 1}º - {teamStats.team} | {teamStats.points} pts | SG:{" "}
+                {teamStats.goalDifference}
+              </li>
+            ))}
+          </ul>
         </div>
       ))}
     </div>

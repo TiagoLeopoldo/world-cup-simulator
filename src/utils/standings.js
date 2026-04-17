@@ -1,32 +1,4 @@
-const group = {
-  teams: [
-    { token: "BRA", nome: "Brasil" },
-    { token: "FRA", nome: "França" },
-    { token: "GER", nome: "Alemanha" },
-  ],
-  matches: [
-    {
-      home: { token: "BRA", nome: "Brasil" },
-      away: { token: "FRA", nome: "França" },
-      homeGoals: 2,
-      awayGoals: 0,
-    },
-    {
-      home: { token: "GER", nome: "Alemanha" },
-      away: { token: "BRA", nome: "Brasil" },
-      homeGoals: 0,
-      awayGoals: 0,
-    },
-    {
-      home: { token: "FRA", nome: "França" },
-      away: { token: "GER", nome: "Alemanha" },
-      homeGoals: 1,
-      awayGoals: 1,
-    },
-  ],
-};
-
-export const calculateStandings = () => {
+export const calculateStandings = (group) => {
   const table = {};
 
   group.teams.forEach((teams) => {
@@ -77,5 +49,3 @@ export const sortStandings = (standings) => {
     }
   });
 };
-
-console.log(sortStandings(calculateStandings(group)));
