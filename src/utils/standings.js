@@ -1,9 +1,9 @@
-export const calculateStandings = (group) => {
+export const calculateStandings = ({teams, matches}) => {
   const table = {};
 
-  group.teams.forEach((teams) => {
-    table[teams.token] = {
-      team: teams.nome,
+  teams.forEach((team) => {
+    table[team.token] = {
+      team: team.nome,
       points: 0,
       goalsFor: 0,
       goalsAgainst: 0,
@@ -11,7 +11,7 @@ export const calculateStandings = (group) => {
     };
   });
 
-  group.matches.forEach((match) => {
+  matches.forEach((match) => {
     const home = table[match.home.token];
     const away = table[match.away.token];
 
@@ -35,17 +35,23 @@ export const calculateStandings = (group) => {
     team.goalDifference = team.goalsFor - team.goalsAgainst;
   });
 
-  return Object.values(table);
+    return Object.values(table).map((team) => ({
+    ...team,
+    goalDifference: team.goalsFor - team.goalsAgainst,
+  }));
 };
 
+
 export const sortStandings = (standings) => {
-  return standings.sort((a, b) => {
+  return [...standings].sort((a, b) => {
     if (a.points !== b.points) {
       return b.points - a.points;
-    } else if (a.points === b.points) {
-      return b.goalDifference - a.goalDifference;
-    } else {
-      return b.goalsFor - a.goalsFor;
     }
+
+    if (a.goalDifference !== b.goalDifference) {
+      return b.goalDifference - a.goalDifference;
+    }
+
+    return Math.random() - 0.5;
   });
 };
