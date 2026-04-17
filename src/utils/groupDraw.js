@@ -1,0 +1,20 @@
+import { shuffleArray } from "./shuffle";
+import { generateMatchesForGroup } from "./matches";
+
+export const createGroups = (teams) => {
+  const shuffleTeams = shuffleArray(teams);
+
+  const groups = [];
+  const groupsNames = ["A", "B", "C", "D", "E", "F", "G", "H"];
+
+  for (let i = 0; i < 8; i++) {
+    const groupTeams = shuffleTeams.slice(i * 4, i * 4 + 4);
+
+    groups.push({
+      group: groupsNames[i],
+      teams: groupTeams,
+      matches: generateMatchesForGroup(groupTeams)
+    });
+  }
+  return groups;
+};
