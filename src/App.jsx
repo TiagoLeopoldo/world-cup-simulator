@@ -15,7 +15,7 @@ function App() {
     fetchTeams();
   }, []);
 
-  console.log(groups)
+  console.log(groups);
   return (
     <div>
       <h1>Grupos da Copa</h1>
@@ -34,7 +34,18 @@ function App() {
           <ul>
             {group.matches.map((match, index) => (
               <li key={index}>
-                {match.home.nome} vs {match.away.nome}
+                {match.home.nome} {match.homeGoals} x {match.awayGoals}{" "}
+                {match.away.nome}
+              </li>
+            ))}
+          </ul>
+
+          <h3>Tabela:</h3>
+          <ul>
+            {group.standings.map((teamStats, index) => (
+              <li key={teamStats.token}>
+                {index + 1}º - {teamStats.team} | {teamStats.points} pts | SG:{" "}
+                {teamStats.goalDifference}
               </li>
             ))}
           </ul>
