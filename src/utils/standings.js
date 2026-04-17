@@ -9,13 +9,13 @@ const group = {
       home: { token: "BRA", nome: "Brasil" },
       away: { token: "FRA", nome: "França" },
       homeGoals: 2,
-      awayGoals: 1,
+      awayGoals: 0,
     },
     {
       home: { token: "GER", nome: "Alemanha" },
       away: { token: "BRA", nome: "Brasil" },
       homeGoals: 0,
-      awayGoals: 3,
+      awayGoals: 0,
     },
     {
       home: { token: "FRA", nome: "França" },
@@ -35,7 +35,7 @@ export const calculateStandings = () => {
       points: 0,
       goalsFor: 0,
       goalsAgainst: 0,
-      goalDiference: 0,
+      goalDifference: 0,
     };
   });
 
@@ -63,7 +63,19 @@ export const calculateStandings = () => {
     team.goalDifference = team.goalsFor - team.goalsAgainst;
   });
 
-  return console.log(Object.values(table));
+  return Object.values(table);
 };
 
-calculateStandings();
+export const sortStandings = (standings) => {
+  return standings.sort((a, b) => {
+    if (a.points !== b.points) {
+      return b.points - a.points;
+    } else if (a.points === b.points) {
+      return b.goalDifference - a.goalDifference;
+    } else {
+      return b.goalsFor - a.goalsFor;
+    }
+  });
+};
+
+console.log(sortStandings(calculateStandings(group)));
