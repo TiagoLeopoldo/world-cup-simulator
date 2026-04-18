@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getTeams } from "./services/api";
 import { createGroups } from "./utils/groupDraw";
+import { getQualifiedTeams } from "./utils/qualification";
 
 function App() {
   const [groups, setGroups] = useState([]);
@@ -15,7 +16,8 @@ function App() {
     fetchTeams();
   }, []);
 
-  console.log(groups);
+  const qualifiedTeams = getQualifiedTeams(groups);
+
   return (
     <div>
       <h1>Grupos da Copa</h1>
@@ -51,6 +53,15 @@ function App() {
           </ul>
         </div>
       ))}
+      <h2>Classificados para as oitavas</h2>
+
+      <ul>
+        {qualifiedTeams.map((team, index) => (
+          <li key={team.token}>
+            {index + 1} - {team.team}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
