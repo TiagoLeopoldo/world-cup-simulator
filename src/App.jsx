@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { getTeams } from "./services/api";
 import { createGroups } from "./utils/groupDraw";
 import { getQualifiedTeams } from "./utils/qualification";
+import { generateRoundOf16 } from "./utils/roundOf16";
 
 function App() {
   const [groups, setGroups] = useState([]);
@@ -17,6 +18,8 @@ function App() {
   }, []);
 
   const qualifiedTeams = getQualifiedTeams(groups);
+
+  const roundOf16 = groups.length === 8 ? generateRoundOf16(groups) : [];
 
   return (
     <div>
@@ -62,8 +65,20 @@ function App() {
           </li>
         ))}
       </ul>
+
+      <h2>Oitavas de Final</h2>
+
+      <ul>
+        {roundOf16.map((match, index) => (
+          <li key={index}>
+            {match[0].team} vs {match[1].team}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
 
 export default App;
+
+
