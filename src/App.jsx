@@ -3,6 +3,7 @@ import { getTeams } from "./services/api";
 import { createGroups } from "./utils/groupDraw";
 import { getQualifiedTeams } from "./utils/qualification";
 import { generateRoundOf16 } from "./utils/roundOf16";
+import { playKnockoutRound } from "./utils/knockoutRounds";
 
 function App() {
   const [groups, setGroups] = useState([]);
@@ -20,6 +21,23 @@ function App() {
   const qualifiedTeams = getQualifiedTeams(groups);
 
   const roundOf16 = groups.length === 8 ? generateRoundOf16(groups) : [];
+
+  const roundOf16Matches = roundOf16;
+
+  const quarterFinals =
+    roundOf16Matches.length === 8
+      ? playKnockoutRound(roundOf16Matches.map((m) => m.winner))
+      : { matches: [], winners: [] };
+
+  const semiFinals =
+    quarterFinals.winners.length === 4
+      ? playKnockoutRound(quarterFinals.winners)
+      : { matches: [], winners: [] };
+
+  const final =
+    semiFinals.winners.length === 2
+      ? playKnockoutRound(semiFinals.winners)
+      : { matches: [], winners: [] };
 
   return (
     <div>
@@ -84,6 +102,57 @@ function App() {
           </li>
         ))}
       </ul>
+
+      <h2>Quartas de Final</h2>
+      <ul>
+        {quarterFinals.matches.map((m, i) => (
+          <li key={i}>
+            {m.teamA.team} {m.goalsA} x {m.goalsB} {m.teamB.team} →{" "}
+            <strong>{m.winner.team}</strong>
+          </li>
+        ))}
+      </ul>
+
+      <h2>Semifinais</h2>
+      <ul>
+        {semiFinals.matches.map((m, i) => (
+          <li key={i}>
+            {m.teamA.team} {m.goalsA} x {m.goalsB} {m.teamB.team}
+            {m.penaltyA !== null && (
+              <>
+                {" "}
+                (pênaltis: {m.penaltyA} x {m.penaltyB})
+              </>
+            )}
+            {" → "}
+            <strong>{m.winner.team}</strong>
+          </li>
+        ))}
+      </ul>
+
+      <h2>Final</h2>
+      <ul>
+        {final.matches.map((m, i) => (
+          <li key={i}>
+            {m.teamA.team} {m.goalsA} x {m.goalsB} {m.teamB.team}
+            {m.penaltyA !== null && (
+              <>
+                {" "}
+                (pênaltis: {m.penaltyA} x {m.penaltyB})
+              </>
+            )}
+            {" → "}
+            <strong>{m.winner.team}</strong>
+          </li>
+        ))}
+      </ul>
+
+      {final.winners.length === 1 && (
+        <>
+          <h2>Campeão</h2>
+          <h3>{final.winners[0].team}</h3>
+        </>
+      )}
     </div>
   );
 }
