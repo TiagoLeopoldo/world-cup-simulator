@@ -3,6 +3,7 @@ import { getTeams } from "./services/api";
 import { createGroups } from "./utils/groupDraw";
 import { getQualifiedTeams } from "./utils/qualification";
 import { generateRoundOf16 } from "./utils/roundOf16";
+import { playKnockoutRound } from "./utils/knockoutRounds";
 
 function App() {
   const [groups, setGroups] = useState([]);
@@ -20,6 +21,15 @@ function App() {
   const qualifiedTeams = getQualifiedTeams(groups);
 
   const roundOf16 = groups.length === 8 ? generateRoundOf16(groups) : [];
+
+  const roundOf16Matches = roundOf16;
+  const quarterFinals = playKnockoutRound(
+    roundOf16Matches.map((m) => m.winner),
+  );
+
+  const semiFinals = playKnockoutRound(quarterFinals.winners);
+
+  const final = playKnockoutRound(semiFinals.winners);
 
   return (
     <div>
@@ -81,6 +91,16 @@ function App() {
             )}
             <spam> vencedor: </spam>
             <strong>{match.winner.team}</strong>
+          </li>
+        ))}
+      </ul>
+
+      <h2>Quartas de Final</h2>
+      <ul>
+        {quarterFinals.matches.map((m, i) => (
+          <li key={i}>
+            {m.teamA.team} {m.goalsA} x {m.goalsB} {m.teamB.team} →{" "}
+            <strong>{m.winner.team}</strong>
           </li>
         ))}
       </ul>
