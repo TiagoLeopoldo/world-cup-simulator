@@ -71,7 +71,16 @@ function App() {
       <ul>
         {roundOf16.map((match, index) => (
           <li key={index}>
-            {match[0].team} vs {match[1].team}
+            {match.teamA.team} {match.goalsA} x {match.goalsB}{" "}
+            {match.teamB.team}
+            {match.penaltyA !== null && (
+              <>
+                {" "}
+                (pênaltis: {match.penaltyA} x {match.penaltyB})
+              </>
+            )}
+            <spam> vencedor: </spam>
+            <strong>{match.winner.team}</strong>
           </li>
         ))}
       </ul>
@@ -80,5 +89,3 @@ function App() {
 }
 
 export default App;
-
-
