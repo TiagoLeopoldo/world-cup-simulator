@@ -4,11 +4,23 @@ export const playKnockoutRound = (teams) => {
   const matches = [];
   const winners = [];
 
+  if (!teams || teams.length < 2) {
+    return { matches: [], winners: [] };
+  }
+
   for (let i = 0; i < teams.length; i += 2) {
-    const match = simulateKnockoutMatch(teams[i], teams[i + 1]);
+    const teamA = teams[i];
+    const teamB = teams[i + 1];
+
+    if (!teamA || !teamB) continue;
+
+    const match = simulateKnockoutMatch(teamA, teamB);
 
     matches.push(match);
-    winners.push(match.winner);
+
+    if (match?.winner) {
+      winners.push(match.winner);
+    }
   }
 
   return {

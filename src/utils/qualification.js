@@ -6,5 +6,8 @@ export const getQualifiedTeams = (groups) => {
     qualified.push(...topTwo);
   });
 
-  return qualified;
+  return qualified.map((team) => ({
+  token: team.token,
+  team: team.team,
+}));
 };

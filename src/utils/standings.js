@@ -3,6 +3,7 @@ export const calculateStandings = ({teams, matches}) => {
 
   teams.forEach((team) => {
     table[team.token] = {
+      token: team.token,
       team: team.nome,
       points: 0,
       goalsFor: 0,

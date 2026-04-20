@@ -21,12 +21,12 @@ export const simulateKnockoutMatch = (teamA, teamB) => {
   }
 
   return {
-    teamA,
-    teamB,
-    goalsA: result.homeGoals,
-    goalsB: result.awayGoals,
-    penaltyA,
-    penaltyB,
-    winner,
-  };
+  teamA,
+  teamB,
+  goalsA: result.homeGoals,
+  goalsB: result.awayGoals,
+  penaltyA,
+  penaltyB,
+  winner,
+};
 };

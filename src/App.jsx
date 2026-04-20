@@ -1,12 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo, useRef } from "react";
 import { getTeams } from "./services/api";
 import { createGroups } from "./utils/groupDraw";
 import { getQualifiedTeams } from "./utils/qualification";
 import { generateRoundOf16 } from "./utils/roundOf16";
 import { playKnockoutRound } from "./utils/knockoutRounds";
+import { sendFinalResult } from "./services/sendFinalResult";
 
 function App() {
   const [groups, setGroups] = useState([]);
+  const hasSentFinal = useRef(false);
 
   useEffect(() => {
     async function fetchTeams() {
@@ -20,13 +22,12 @@ function App() {
 
   const qualifiedTeams = getQualifiedTeams(groups);
 
-  const roundOf16 = groups.length === 8 ? generateRoundOf16(groups) : [];
-
-  const roundOf16Matches = roundOf16;
+  const roundOf16 =
+    groups.length === 8 ? generateRoundOf16(groups) : [];
 
   const quarterFinals =
-    roundOf16Matches.length === 8
-      ? playKnockoutRound(roundOf16Matches.map((m) => m.winner))
+    roundOf16.length === 8
+      ? playKnockoutRound(roundOf16.map((m) => m.winner))
       : { matches: [], winners: [] };
 
   const semiFinals =
@@ -38,6 +39,26 @@ function App() {
     semiFinals.winners.length === 2
       ? playKnockoutRound(semiFinals.winners)
       : { matches: [], winners: [] };
+
+  // 🔥 FIX: trava instabilidade da final
+  const finalMatch = useMemo(() => {
+    return final.matches?.[0] ?? null;
+  }, [final.matches]);
+
+  useEffect(() => {
+    if (!finalMatch) return;
+    if (final.winners.length !== 1) return;
+    if (hasSentFinal.current) return;
+
+    const run = async () => {
+      hasSentFinal.current = true;
+
+      console.log("ENVIANDO FINAL:", finalMatch);
+      await sendFinalResult(finalMatch);
+    };
+
+    run();
+  }, [finalMatch, final.winners.length]);
 
   return (
     <div>
@@ -65,15 +86,16 @@ function App() {
 
           <h3>Tabela:</h3>
           <ul>
-            {group.standings.map((teamStats, index) => (
+            {group.standings.map((teamStats) => (
               <li key={teamStats.token}>
-                {index + 1}º - {teamStats.team} | {teamStats.points} pts | SG:{" "}
+                {teamStats.team} | {teamStats.points} pts | SG:{" "}
                 {teamStats.goalDifference}
               </li>
             ))}
           </ul>
         </div>
       ))}
+
       <h2>Classificados para as oitavas</h2>
 
       <ul>
@@ -97,7 +119,7 @@ function App() {
                 (pênaltis: {match.penaltyA} x {match.penaltyB})
               </>
             )}
-            <spam> vencedor: </spam>
+            <span> vencedor: </span>
             <strong>{match.winner.team}</strong>
           </li>
         ))}
