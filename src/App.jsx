@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo, useRef } from "react";
+import { useEffect, useState } from "react";
 import { getTeams } from "./services/api";
 import { createGroups } from "./utils/groupDraw";
 import { getQualifiedTeams } from "./utils/qualification";
@@ -8,57 +8,57 @@ import { sendFinalResult } from "./services/sendFinalResult";
 
 function App() {
   const [groups, setGroups] = useState([]);
-  const hasSentFinal = useRef(false);
+  const [tournament, setTournament] = useState(null);
 
   useEffect(() => {
-    async function fetchTeams() {
+    async function runTournament() {
       const data = await getTeams();
+
+      // 1. Grupos
       const generatedGroups = createGroups(data);
+
+      // 2. Classificados
+      const qualifiedTeams = getQualifiedTeams(generatedGroups);
+
+      // 3. Oitavas
+      const roundOf16 = generateRoundOf16(generatedGroups);
+
+      // 4. Quartas
+      const quarterFinals = playKnockoutRound(
+        roundOf16.map((m) => m.winner)
+      );
+
+      // 5. Semifinais
+      const semiFinals = playKnockoutRound(quarterFinals.winners);
+
+      // 6. Final
+      const final = playKnockoutRound(semiFinals.winners);
+
       setGroups(generatedGroups);
+      setTournament({
+        qualifiedTeams,
+        roundOf16,
+        quarterFinals,
+        semiFinals,
+        final,
+      });
     }
 
-    fetchTeams();
+    runTournament();
   }, []);
 
-  const qualifiedTeams = getQualifiedTeams(groups);
-
-  const roundOf16 =
-    groups.length === 8 ? generateRoundOf16(groups) : [];
-
-  const quarterFinals =
-    roundOf16.length === 8
-      ? playKnockoutRound(roundOf16.map((m) => m.winner))
-      : { matches: [], winners: [] };
-
-  const semiFinals =
-    quarterFinals.winners.length === 4
-      ? playKnockoutRound(quarterFinals.winners)
-      : { matches: [], winners: [] };
-
-  const final =
-    semiFinals.winners.length === 2
-      ? playKnockoutRound(semiFinals.winners)
-      : { matches: [], winners: [] };
-
-  // 🔥 FIX: trava instabilidade da final
-  const finalMatch = useMemo(() => {
-    return final.matches?.[0] ?? null;
-  }, [final.matches]);
-
   useEffect(() => {
-    if (!finalMatch) return;
-    if (final.winners.length !== 1) return;
-    if (hasSentFinal.current) return;
+    if (!tournament?.final?.winners?.length) return;
 
     const run = async () => {
-      hasSentFinal.current = true;
-
-      console.log("ENVIANDO FINAL:", finalMatch);
-      await sendFinalResult(finalMatch);
+      console.log("ENVIANDO FINAL:", tournament.final.matches[0]);
+      await sendFinalResult(tournament.final.matches[0]);
     };
 
     run();
-  }, [finalMatch, final.winners.length]);
+  }, [tournament]);
+
+  if (!tournament) return <p>Carregando...</p>;
 
   return (
     <div>
@@ -86,9 +86,9 @@ function App() {
 
           <h3>Tabela:</h3>
           <ul>
-            {group.standings.map((teamStats) => (
+            {group.standings.map((teamStats, index) => (
               <li key={teamStats.token}>
-                {teamStats.team} | {teamStats.points} pts | SG:{" "}
+                {index + 1}º - {teamStats.team} | {teamStats.points} pts | SG:{" "}
                 {teamStats.goalDifference}
               </li>
             ))}
@@ -97,9 +97,8 @@ function App() {
       ))}
 
       <h2>Classificados para as oitavas</h2>
-
       <ul>
-        {qualifiedTeams.map((team, index) => (
+        {tournament.qualifiedTeams.map((team, index) => (
           <li key={team.token}>
             {index + 1} - {team.team}
           </li>
@@ -107,19 +106,15 @@ function App() {
       </ul>
 
       <h2>Oitavas de Final</h2>
-
       <ul>
-        {roundOf16.map((match, index) => (
+        {tournament.roundOf16.map((match, index) => (
           <li key={index}>
             {match.teamA.team} {match.goalsA} x {match.goalsB}{" "}
             {match.teamB.team}
             {match.penaltyA !== null && (
-              <>
-                {" "}
-                (pênaltis: {match.penaltyA} x {match.penaltyB})
-              </>
+              <> (pênaltis: {match.penaltyA} x {match.penaltyB})</>
             )}
-            <span> vencedor: </span>
+            {" → "}
             <strong>{match.winner.team}</strong>
           </li>
         ))}
@@ -127,7 +122,7 @@ function App() {
 
       <h2>Quartas de Final</h2>
       <ul>
-        {quarterFinals.matches.map((m, i) => (
+        {tournament.quarterFinals.matches.map((m, i) => (
           <li key={i}>
             {m.teamA.team} {m.goalsA} x {m.goalsB} {m.teamB.team} →{" "}
             <strong>{m.winner.team}</strong>
@@ -137,14 +132,11 @@ function App() {
 
       <h2>Semifinais</h2>
       <ul>
-        {semiFinals.matches.map((m, i) => (
+        {tournament.semiFinals.matches.map((m, i) => (
           <li key={i}>
             {m.teamA.team} {m.goalsA} x {m.goalsB} {m.teamB.team}
             {m.penaltyA !== null && (
-              <>
-                {" "}
-                (pênaltis: {m.penaltyA} x {m.penaltyB})
-              </>
+              <> (pênaltis: {m.penaltyA} x {m.penaltyB})</>
             )}
             {" → "}
             <strong>{m.winner.team}</strong>
@@ -154,14 +146,11 @@ function App() {
 
       <h2>Final</h2>
       <ul>
-        {final.matches.map((m, i) => (
+        {tournament.final.matches.map((m, i) => (
           <li key={i}>
             {m.teamA.team} {m.goalsA} x {m.goalsB} {m.teamB.team}
             {m.penaltyA !== null && (
-              <>
-                {" "}
-                (pênaltis: {m.penaltyA} x {m.penaltyB})
-              </>
+              <> (pênaltis: {m.penaltyA} x {m.penaltyB})</>
             )}
             {" → "}
             <strong>{m.winner.team}</strong>
@@ -169,10 +158,10 @@ function App() {
         ))}
       </ul>
 
-      {final.winners.length === 1 && (
+      {tournament.final.winners.length === 1 && (
         <>
           <h2>Campeão</h2>
-          <h3>{final.winners[0].team}</h3>
+          <h3>{tournament.final.winners[0].team}</h3>
         </>
       )}
     </div>
