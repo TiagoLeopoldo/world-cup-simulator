@@ -1,0 +1,51 @@
+RELATÓRIO DE FALHAS DE ARQUITETURA
+=================================
+
+1. INSTABILIDADE DE SIMULAÇÃO (RENDER-SIDE LOGIC)
+------------------------------------------------
+- Onde ocorre: App.jsx (linhas 28-41).
+- Por que ocorre: As funções `playKnockoutRound` e `generateRoundOf16` são chamadas diretamente no corpo do componente, sem `useMemo` ou armazenamento em `useState`.
+- Qual o impacto: Como a simulação usa `Math.random()`, os resultados do torneio mudam em cada re-render do React. Se o usuário redimensionar a tela ou o estado de grupos for atualizado, o campeão pode mudar instantaneamente na tela.
+- Etapa afetada: Todas as fases de mata-mata (Oitavas até Final).
+
+2. EXECUÇÃO DE EFEITOS COLATERAIS NO RENDER
+-------------------------------------------
+- Onde ocorre: App.jsx e utilitários de simulação.
+- Por que ocorre: A simulação de partidas (geração de gols e vencedores) é uma operação com "efeito colateral" (muda o estado do torneio) mas está sendo tratada como uma função pura de renderização.
+- Qual o impacto: Violação dos princípios do React. O fluxo de dados torna-se imprevisível e difícil de debugar, pois a "verdade" dos dados muda constantemente.
+- Etapa afetada: Fluxo completo de simulação.
+
+3. INCONSISTÊNCIA NO PAYLOAD DE INTEGRAÇÃO
+------------------------------------------
+- Onde ocorre: src/services/sendFinalResult.js (linhas 5-13).
+- Por que ocorre: O payload enviado utiliza os nomes dos times (`finalMatch.teamA.team`) em vez dos tokens únicos (`finalMatch.teamA.token`), apesar de os tokens terem sido recuperados nos utilitários.
+- Qual o impacto: Se a API exigir identificação única (o que é padrão em sistemas de banco de dados), o envio apenas do nome da seleção resultará em Erro 400 ou falha na associação dos dados no backend.
+- Etapa afetada: Envio Final (POST).
+
+4. RISCO DE RUNTIME ERROR (ACESSO A PROPRIEDADES)
+-------------------------------------------------
+- Onde ocorre: App.jsx (ex: linhas 105, 123, 150) e knockoutRounds.js.
+- Por que ocorre: Não há verificação de existência (`null checks`) antes de acessar propriedades como `m.teamA.team` ou `m.winner.team`.
+- Qual o impacto: Se por qualquer erro lógico o `playKnockoutRound` retornar uma lista de times ímpar, o sistema tentará acessar o `teamB` de um índice inexistente, causando um crash total da aplicação (White Screen of Death).
+- Etapa afetada: Renderização de todas as fases eliminatórias.
+
+5. LOOP DE DESEMPATE INDEFINIDO
+-------------------------------
+- Onde ocorre: src/utils/knockout.js (linhas 15-18).
+- Por que ocorre: O laço `do...while` para disputa de pênaltis confia apenas na aleatoriedade para sair do loop.
+- Qual o impacto: Embora estatisticamente improvável, em um ambiente de execução JS, loops baseados puramente em `Math.random()` sem limite de iterações são considerados má prática e podem travar a thread principal em cenários extremos.
+- Etapa afetada: Simulação de partidas de mata-mata.
+
+6. FALTA DE PERSISTÊNCIA NA TABELA DE CLASSIFICAÇÃO
+---------------------------------------------------
+- Onde ocorre: src/utils/standings.js (linha 55).
+- Por que ocorre: O critério de desempate final é `Math.random() - 0.5`.
+- Qual o impacto: Times com a mesma pontuação e saldo de gols trocam de posição (1º e 2º) a cada atualização de tela, mudando o chaveamento das oitavas de final arbitrariamente.
+- Etapa afetada: Classificação da fase de grupos.
+
+7. DEPENDÊNCIA DE ESTADO DERIVADO INSTÁVEL PARA POST
+----------------------------------------------------
+- Onde ocorre: App.jsx (useEffect linha 43).
+- Por que ocorre: O efeito de envio monitora `final.winners.length`. Como `final` é recalculado em cada render, o objeto referencial muda sempre.
+- Qual o impacto: Risco de disparos múltiplos ou inconsistentes do POST. O `useEffect` pode tentar enviar um resultado de uma simulação enquanto o render já mostra outra (devido à natureza assíncrona).
+- Etapa afetada: Envio Final (POST).
