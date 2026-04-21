@@ -1,184 +1,356 @@
-.counter {
-  font-size: 16px;
-  padding: 5px 10px;
-  border-radius: 5px;
-  color: var(--accent);
-  background: var(--accent-bg);
-  border: 2px solid transparent;
-  transition: border-color 0.3s;
-  margin-bottom: 24px;
+/* App Container */
 
-  &:hover {
-    border-color: var(--accent-border);
-  }
-  &:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-  }
+.app {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px;
+  padding-bottom: 80px;
 }
 
-.hero {
+/* Main Title */
+
+.app-title {
+  font-size: 28px;
+  font-weight: 900;
+  text-align: center;
+  padding: 32px 16px 28px;
+  margin-bottom: 32px;
+  background: linear-gradient(135deg, #111111 0%, #222222 100%);
+  border: 1px solid var(--border-glow);
+  border-radius: var(--radius-lg);
+  color: var(--text-bright);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  box-shadow: var(--shadow-glow), var(--shadow-card);
   position: relative;
+  overflow: hidden;
+}
 
-  .base,
-  .framework,
-  .vite {
-    inset-inline: 0;
-    margin: 0 auto;
-  }
+.app-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, var(--wc-cyan), var(--wc-magenta), var(--wc-lime));
+}
 
-  .base {
-    width: 170px;
-    position: relative;
-    z-index: 0;
-  }
-
-  .framework,
-  .vite {
-    position: absolute;
-  }
-
-  .framework {
-    z-index: 1;
-    top: 34px;
-    height: 28px;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(44deg) rotateY(39deg)
-      scale(1.4);
-  }
-
-  .vite {
-    z-index: 0;
-    top: 107px;
-    height: 26px;
-    width: auto;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(40deg) rotateY(39deg)
-      scale(0.8);
+@media (min-width: 768px) {
+  .app-title {
+    font-size: 42px;
+    padding: 48px 24px;
+    margin-bottom: 48px;
   }
 }
 
-#center {
+/* Group Grid */
+
+@media (min-width: 768px) {
+  .app {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 24px;
+  }
+
+  .app-title {
+    width: 100%;
+    flex-shrink: 0;
+  }
+
+  .group-card {
+    width: calc(50% - 10px);
+    margin-bottom: 0;
+  }
+
+  .phase-title,
+  .qualified-list,
+  .knockout-list,
+  .champion-block {
+    width: 100%;
+    flex-shrink: 0;
+  }
+}
+
+@media (min-width: 1024px) {
+  .group-card {
+    width: calc(25% - 15px);
+  }
+}
+
+/* Group Cards */
+
+.group-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-lg);
+  padding: 0;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+}
+
+.group-name {
+  font-size: 16px;
+  font-weight: 900;
+  color: var(--text-bright);
+  background: #111111;
+  padding: 16px 20px;
+  border-bottom: 2px solid var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* Section Labels */
+
+.section-label {
+  font-size: 9px;
+  font-weight: 800;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin: 0;
+  padding: 16px 20px 8px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+/* Lista de times */
+
+.teams-list {
+  list-style: none;
+  padding: 12px 20px 4px;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+}
+
+.team-item {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-sm);
+  color: var(--text-light);
+  text-transform: uppercase;
+}
+
+/* Jogos */
+
+.matches-list {
+  list-style: none;
+  padding: 0 16px 12px;
+  margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 25px;
-  place-content: center;
-  place-items: center;
-  flex-grow: 1;
-
-  @media (max-width: 1024px) {
-    padding: 32px 20px 24px;
-    gap: 18px;
-  }
+  gap: 6px;
 }
 
-#next-steps {
+.match-item {
   display: flex;
-  border-top: 1px solid var(--border);
-  text-align: left;
-
-  & > div {
-    flex: 1 1 0;
-    padding: 32px;
-    @media (max-width: 1024px) {
-      padding: 24px 20px;
-    }
-  }
-
-  .icon {
-    margin-bottom: 16px;
-    width: 22px;
-    height: 22px;
-  }
-
-  @media (max-width: 1024px) {
-    flex-direction: column;
-    text-align: center;
-  }
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-match);
+  border: 1px solid var(--border-subtle);
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-light);
 }
 
-#docs {
-  border-right: 1px solid var(--border);
+/* Tabela de Classificação */
 
-  @media (max-width: 1024px) {
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-  }
+.standings-list {
+  list-style: none;
+  padding: 0 16px 16px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
-#next-steps ul {
+.standing-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-light);
+}
+
+.standings-list .standing-item:nth-child(1),
+.standings-list .standing-item:nth-child(2) {
+  background: var(--green-bg);
+  color: var(--green-glow);
+  font-weight: 800;
+  border-left: 2px solid var(--green-glow);
+}
+
+/* Títulares das Fases */
+
+.phase-title {
+  font-size: 18px;
+  font-weight: 900;
+  color: var(--text-bright);
+  margin-top: 60px;
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.phase-title-final {
+  border-bottom-color: var(--wc-magenta);
+}
+
+/* Classificados Oitavas */
+
+.qualified-list {
   list-style: none;
   padding: 0;
+  margin: 0 0 24px;
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
-  margin: 32px 0 0;
+  justify-content: center;
+}
 
-  .logo {
-    height: 18px;
-  }
+.qualified-item {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 6px 16px;
+  background: var(--green-bg);
+  color: var(--green-glow);
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(165, 223, 0, 0.2);
+  text-transform: uppercase;
+}
 
-  a {
-    color: var(--text-h);
-    font-size: 16px;
-    border-radius: 6px;
-    background: var(--social-bg);
-    display: flex;
-    padding: 6px 12px;
-    align-items: center;
-    gap: 8px;
-    text-decoration: none;
-    transition: box-shadow 0.3s;
+/* Mata Mata */
 
-    &:hover {
-      box-shadow: var(--shadow);
-    }
-    .button-icon {
-      height: 18px;
-      width: 18px;
-    }
-  }
+.knockout-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 24px;
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 1fr;
+}
 
-  @media (max-width: 1024px) {
-    margin-top: 20px;
-    flex-wrap: wrap;
-    justify-content: center;
-
-    li {
-      flex: 1 1 calc(50% - 8px);
-    }
-
-    a {
-      width: 100%;
-      justify-content: center;
-      box-sizing: border-box;
-    }
+@media (min-width: 768px) {
+  .knockout-list {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
-#spacer {
-  height: 88px;
-  border-top: 1px solid var(--border);
-  @media (max-width: 1024px) {
-    height: 48px;
+@media (min-width: 1024px) {
+  .knockout-list {
+    grid-template-columns: repeat(4, 1fr);
   }
 }
 
-.ticks {
+.knockout-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  box-shadow: var(--shadow-card);
+  backdrop-filter: blur(10px);
+}
+
+.knockout-item strong {
+  display: block;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-subtle);
+  color: var(--wc-cyan);
+  font-weight: 900;
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Final */
+
+.knockout-list-final {
+  grid-template-columns: 1fr;
+  max-width: 500px;
+}
+
+@media (min-width: 768px) {
+  .knockout-list-final {
+    margin: 0 auto 24px auto;
+  }
+}
+
+.knockout-item-final {
+  border: 2px solid var(--wc-magenta);
+  background: linear-gradient(135deg, rgba(255, 18, 125, 0.1) 0%, rgba(255, 18, 125, 0.02) 100%);
+  padding: 32px;
+}
+
+.knockout-item-final strong {
+  color: var(--wc-magenta);
+  font-size: 22px;
+}
+
+/* Campeão - A Grande Final 2026 */
+
+.champion-block {
+  margin-top: 64px;
+  padding: 48px 24px;
+  text-align: center;
+  border-radius: var(--radius-lg);
+  background: #000000;
+  border: 2px solid var(--wc-white);
+  box-shadow: 
+    0 0 50px rgba(0, 224, 255, 0.1),
+    0 0 50px rgba(255, 18, 125, 0.1);
   position: relative;
-  width: 100%;
+}
 
-  &::before,
-  &::after {
-    content: '';
-    position: absolute;
-    top: -4.5px;
-    border: 5px solid transparent;
+.champion-block::before {
+  content: '';
+  position: absolute;
+  top: -2px; left: -2px; right: -2px; bottom: -2px;
+  background: linear-gradient(45deg, var(--wc-cyan), var(--wc-magenta), var(--wc-lime));
+  z-index: -1;
+  border-radius: inherit;
+  opacity: 0.5;
+}
+
+.champion-label {
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+
+.champion-name {
+  font-size: 42px;
+  font-weight: 900;
+  color: var(--text-bright);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+@media (min-width: 768px) {
+  .champion-block {
+    padding: 72px 48px;
   }
 
-  &::before {
-    left: 0;
-    border-left-color: var(--border);
-  }
-  &::after {
-    right: 0;
-    border-right-color: var(--border);
+  .champion-name {
+    font-size: 64px;
   }
 }
