@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { getTeams } from "./services/api";
 import { createGroups } from "./utils/groupDraw";
 import { getQualifiedTeams } from "./utils/qualification";
@@ -10,6 +10,7 @@ import "./App.css";
 function App() {
   const [groups, setGroups] = useState([]);
   const [tournament, setTournament] = useState(null);
+  const resultSent = useRef(false);
 
   useEffect(() => {
     async function runTournament() {
@@ -49,10 +50,10 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (!tournament?.final?.winners?.length) return;
+    if (!tournament?.final?.winners?.length || resultSent.current) return;
 
     const run = async () => {
-      console.log("ENVIANDO FINAL:", tournament.final.matches[0]);
+      resultSent.current = true;
       await sendFinalResult(tournament.final.matches[0]);
     };
 
