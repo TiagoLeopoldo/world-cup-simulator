@@ -43,6 +43,8 @@
 @media (min-width: 768px) {
   .champion-block {
     padding: 72px 48px;
+    width: 100%;
+    flex-shrink: 0;
   }
 
   .champion-name {

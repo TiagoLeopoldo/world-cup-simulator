@@ -74,3 +74,23 @@ body {
   font-weight: 600;
   letter-spacing: 0.05em;
 }
+
+/* Títulos das Fases - Estilo Global Typography */
+.phase-title {
+  font-size: 18px;
+  font-weight: 900;
+  color: var(--text-bright);
+  margin-top: 60px;
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+@media (min-width: 768px) {
+  .phase-title {
+    width: 100%;
+    flex-shrink: 0;
+  }
+}

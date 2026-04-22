@@ -59,10 +59,7 @@
     flex-shrink: 0;
   }
 
-  .phase-title,
-  .qualified-list,
-  .knockout-list,
-  .champion-block {
+  .qualified-list {
     width: 100%;
     flex-shrink: 0;
   }

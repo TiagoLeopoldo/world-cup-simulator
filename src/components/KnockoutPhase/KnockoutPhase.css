@@ -1,16 +1,4 @@
 /* Títulares das Fases */
-.phase-title {
-  font-size: 18px;
-  font-weight: 900;
-  color: var(--text-bright);
-  margin-top: 60px;
-  margin-bottom: 24px;
-  padding-bottom: 12px;
-  border-bottom: 2px solid var(--accent);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-}
-
 .phase-title-final {
   border-bottom-color: var(--wc-magenta);
 }
@@ -28,6 +16,8 @@
 @media (min-width: 768px) {
   .knockout-list {
     grid-template-columns: repeat(2, 1fr);
+    width: 100%;
+    flex-shrink: 0;
   }
 }
 
