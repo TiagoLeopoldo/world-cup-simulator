@@ -2,7 +2,7 @@ import "./KnockoutPhase.css";
 
 const KnockoutPhase = ({ title, matches, isFinal }) => {
   return (
-    <>
+    <section className="knockout-phase">
       <h2 className={`phase-title ${isFinal ? "phase-title-final" : ""}`}>{title}</h2>
 
       <ul className={`knockout-list ${isFinal ? "knockout-list-final" : ""} ${matches?.length === 2 && !isFinal ? "knockout-list-semi" : ""}`}>
@@ -20,7 +20,7 @@ const KnockoutPhase = ({ title, matches, isFinal }) => {
           </li>
         ))}
       </ul>
-    </>
+    </section>
   );
 };
 

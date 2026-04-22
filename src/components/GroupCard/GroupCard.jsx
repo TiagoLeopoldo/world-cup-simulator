@@ -3,7 +3,7 @@ import MatchItem from "../MatchItem/MatchItem";
 
 const GroupCard = ({ group }) => {
   return (
-    <div className="group-card">
+    <section className="group-card">
       <h2 className="group-name">Grupo {group.group}</h2>
 
       <ul className="teams-list">
@@ -30,7 +30,7 @@ const GroupCard = ({ group }) => {
           </li>
         ))}
       </ul>
-    </div>
+    </section>
   );
 };
 
