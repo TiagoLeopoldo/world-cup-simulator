@@ -5,6 +5,7 @@ import { getQualifiedTeams } from "./utils/qualification";
 import { generateRoundOf16 } from "./utils/roundOf16";
 import { playKnockoutRound } from "./utils/knockoutRounds";
 import { sendFinalResult } from "./services/sendFinalResult";
+import GroupCard from "./components/GroupCard/GroupCard";
 import "./App.css";
 
 function App() {
@@ -51,6 +52,7 @@ function App() {
 
   useEffect(() => {
     if (!tournament?.final?.winners?.length || resultSent.current) return;
+    
     const run = async () => {
       resultSent.current = true;
       await sendFinalResult(tournament.final.matches[0]);
@@ -66,35 +68,7 @@ function App() {
       <h1 className="app-title">Copa do Mundo FIFA 2026</h1>
 
       {groups.map((group) => (
-        <div key={group.group} className="group-card">
-          <h2 className="group-name">Grupo {group.group}</h2>
-
-          <ul className="teams-list">
-            {group.teams.map((team) => (
-              <li key={team.token} className="team-item">{team.nome}</li>
-            ))}
-          </ul>
-
-          <h3 className="section-label">Jogos:</h3>
-          <ul className="matches-list">
-            {group.matches.map((match, index) => (
-              <li key={index} className="match-item">
-                {match.home.nome} {match.homeGoals} x {match.awayGoals}{" "}
-                {match.away.nome}
-              </li>
-            ))}
-          </ul>
-
-          <h3 className="section-label">Tabela:</h3>
-          <ul className="standings-list">
-            {group.standings.map((teamStats, index) => (
-              <li key={teamStats.token} className="standing-item">
-                {index + 1}º - {teamStats.team} | {teamStats.points} pts | SG:{" "}
-                {teamStats.goalDifference}
-              </li>
-            ))}
-          </ul>
-        </div>
+        <GroupCard key={group.group} group={group} />
       ))}
 
       <h2 className="phase-title">Classificados para as oitavas</h2>
