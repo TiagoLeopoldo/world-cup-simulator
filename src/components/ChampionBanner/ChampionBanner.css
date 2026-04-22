@@ -1,0 +1,51 @@
+/* Campeão - A Grande Final 2026 */
+
+.champion-block {
+  margin-top: 64px;
+  padding: 48px 24px;
+  text-align: center;
+  border-radius: var(--radius-lg);
+  background: #000000;
+  border: 2px solid var(--wc-white);
+  box-shadow: 
+    0 0 50px rgba(0, 224, 255, 0.1),
+    0 0 50px rgba(255, 18, 125, 0.1);
+  position: relative;
+}
+
+.champion-block::before {
+  content: '';
+  position: absolute;
+  top: -2px; left: -2px; right: -2px; bottom: -2px;
+  background: linear-gradient(45deg, var(--wc-cyan), var(--wc-magenta), var(--wc-lime));
+  z-index: -1;
+  border-radius: inherit;
+  opacity: 0.5;
+}
+
+.champion-label {
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+
+.champion-name {
+  font-size: 42px;
+  font-weight: 900;
+  color: var(--text-bright);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+@media (min-width: 768px) {
+  .champion-block {
+    padding: 72px 48px;
+  }
+
+  .champion-name {
+    font-size: 64px;
+  }
+}

@@ -7,6 +7,7 @@ import { playKnockoutRound } from "./utils/knockoutRounds";
 import { sendFinalResult } from "./services/sendFinalResult";
 import GroupCard from "./components/GroupCard/GroupCard";
 import KnockoutPhase from "./components/KnockoutPhase/KnockoutPhase";
+import ChampionBanner from "./components/ChampionBanner/ChampionBanner";
 import "./App.css";
 
 function App() {
@@ -98,10 +99,7 @@ function App() {
       />
 
       {tournament.final.winners.length === 1 && (
-        <div className="champion-block">
-          <h2 className="champion-label">Campeão</h2>
-          <h3 className="champion-name">{tournament.final.winners[0].team}</h3>
-        </div>
+        <ChampionBanner team={tournament.final.winners[0].team} />
       )}
     </div>
   );
