@@ -6,6 +6,7 @@ import { generateRoundOf16 } from "./utils/roundOf16";
 import { playKnockoutRound } from "./utils/knockoutRounds";
 import { sendFinalResult } from "./services/sendFinalResult";
 import GroupCard from "./components/GroupCard/GroupCard";
+import KnockoutPhase from "./components/KnockoutPhase/KnockoutPhase";
 import "./App.css";
 
 function App() {
@@ -80,19 +81,10 @@ function App() {
         ))}
       </ul>
 
-      <h2 className="phase-title">Oitavas de Final</h2>
-      <ul className="knockout-list">
-        {tournament.roundOf16.map((match, index) => (
-          <li key={index} className="knockout-item">
-            {match.teamA.team} {match.goalsA} x {match.goalsB}{" "}
-            {match.teamB.team}
-            {match.penaltyA !== null && (
-              <> (pênaltis: {match.penaltyA} x {match.penaltyB})</>
-            )}
-            <strong>{match.winner.team}</strong>
-          </li>
-        ))}
-      </ul>
+      <KnockoutPhase
+        title="Oitavas de Final"
+        matches={tournament.roundOf16}
+      />
 
       <h2 className="phase-title">Quartas de Final</h2>
       <ul className="knockout-list">
