@@ -1,0 +1,29 @@
+/* Classificados Oitavas */
+
+.qualified-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.qualified-item {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 6px 16px;
+  background: var(--green-bg);
+  color: var(--green-glow);
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(165, 223, 0, 0.2);
+  text-transform: uppercase;
+}
+
+@media (min-width: 768px) {
+  .qualified-list {
+    width: 100%;
+    flex-shrink: 0;
+  }
+}

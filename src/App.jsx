@@ -8,6 +8,7 @@ import { sendFinalResult } from "./services/sendFinalResult";
 import GroupCard from "./components/GroupCard/GroupCard";
 import KnockoutPhase from "./components/KnockoutPhase/KnockoutPhase";
 import ChampionBanner from "./components/ChampionBanner/ChampionBanner";
+import QualifiedList from "./components/QualifiedList/QualifiedList";
 import "./App.css";
 
 function App() {
@@ -71,14 +72,7 @@ function App() {
         <GroupCard key={group.group} group={group} />
       ))}
 
-      <h2 className="phase-title">Classificados para as oitavas</h2>
-      <ul className="qualified-list">
-        {tournament.qualifiedTeams.map((team, index) => (
-          <li key={team.token} className="qualified-item">
-            {index + 1} - {team.team}
-          </li>
-        ))}
-      </ul>
+      <QualifiedList qualifiedTeams={tournament.qualifiedTeams} />
 
       <KnockoutPhase title="Oitavas de Final" matches={tournament.roundOf16} />
 
