@@ -60,6 +60,22 @@
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
+/* Semifinais */
+.knockout-list-semi {
+  max-width: 700px;
+}
+
+@media (min-width: 768px) {
+  .knockout-list-semi {
+    margin: 0 auto 24px auto;
+  }
+}
+
+@media (min-width: 1024px) {
+  .knockout-list-semi {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
 
 /* Final */
 .knockout-list-final {

@@ -28,9 +28,7 @@ function App() {
       const roundOf16 = generateRoundOf16(generatedGroups);
 
       // 4. Quartas
-      const quarterFinals = playKnockoutRound(
-        roundOf16.map((m) => m.winner)
-      );
+      const quarterFinals = playKnockoutRound(roundOf16.map((m) => m.winner));
 
       // 5. Semifinais
       const semiFinals = playKnockoutRound(quarterFinals.winners);
@@ -53,7 +51,7 @@ function App() {
 
   useEffect(() => {
     if (!tournament?.final?.winners?.length || resultSent.current) return;
-    
+
     const run = async () => {
       resultSent.current = true;
       await sendFinalResult(tournament.final.matches[0]);
@@ -81,10 +79,7 @@ function App() {
         ))}
       </ul>
 
-      <KnockoutPhase
-        title="Oitavas de Final"
-        matches={tournament.roundOf16}
-      />
+      <KnockoutPhase title="Oitavas de Final" matches={tournament.roundOf16} />
 
       <KnockoutPhase
         title="Quartas de Final"
