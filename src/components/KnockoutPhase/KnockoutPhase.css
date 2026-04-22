@@ -1,0 +1,85 @@
+/* Títulares das Fases */
+.phase-title {
+  font-size: 18px;
+  font-weight: 900;
+  color: var(--text-bright);
+  margin-top: 60px;
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.phase-title-final {
+  border-bottom-color: var(--wc-magenta);
+}
+
+/* Mata Mata */
+.knockout-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 24px;
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+  .knockout-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .knockout-list {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.knockout-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  box-shadow: var(--shadow-card);
+  backdrop-filter: blur(10px);
+}
+
+.knockout-item strong {
+  display: block;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-subtle);
+  color: var(--wc-cyan);
+  font-weight: 900;
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Final */
+.knockout-list-final {
+  grid-template-columns: 1fr;
+  max-width: 500px;
+}
+
+@media (min-width: 768px) {
+  .knockout-list-final {
+    margin: 0 auto 24px auto;
+  }
+}
+
+.knockout-item-final {
+  border: 2px solid var(--wc-magenta);
+  background: linear-gradient(135deg, rgba(255, 18, 125, 0.1) 0%, rgba(255, 18, 125, 0.02) 100%);
+  padding: 32px;
+}
+
+.knockout-item-final strong {
+  color: var(--wc-magenta);
+  font-size: 22px;
+}

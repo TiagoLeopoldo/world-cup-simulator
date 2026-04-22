@@ -6,6 +6,7 @@ import { generateRoundOf16 } from "./utils/roundOf16";
 import { playKnockoutRound } from "./utils/knockoutRounds";
 import { sendFinalResult } from "./services/sendFinalResult";
 import GroupCard from "./components/GroupCard/GroupCard";
+import KnockoutPhase from "./components/KnockoutPhase/KnockoutPhase";
 import "./App.css";
 
 function App() {
@@ -80,55 +81,26 @@ function App() {
         ))}
       </ul>
 
-      <h2 className="phase-title">Oitavas de Final</h2>
-      <ul className="knockout-list">
-        {tournament.roundOf16.map((match, index) => (
-          <li key={index} className="knockout-item">
-            {match.teamA.team} {match.goalsA} x {match.goalsB}{" "}
-            {match.teamB.team}
-            {match.penaltyA !== null && (
-              <> (pênaltis: {match.penaltyA} x {match.penaltyB})</>
-            )}
-            <strong>{match.winner.team}</strong>
-          </li>
-        ))}
-      </ul>
+      <KnockoutPhase
+        title="Oitavas de Final"
+        matches={tournament.roundOf16}
+      />
 
-      <h2 className="phase-title">Quartas de Final</h2>
-      <ul className="knockout-list">
-        {tournament.quarterFinals.matches.map((m, i) => (
-          <li key={i} className="knockout-item">
-            {m.teamA.team} {m.goalsA} x {m.goalsB} {m.teamB.team}
-            <strong>{m.winner.team}</strong>
-          </li>
-        ))}
-      </ul>
+      <KnockoutPhase
+        title="Quartas de Final"
+        matches={tournament.quarterFinals.matches}
+      />
 
-      <h2 className="phase-title">Semifinais</h2>
-      <ul className="knockout-list">
-        {tournament.semiFinals.matches.map((m, i) => (
-          <li key={i} className="knockout-item">
-            {m.teamA.team} {m.goalsA} x {m.goalsB} {m.teamB.team}
-            {m.penaltyA !== null && (
-              <> (pênaltis: {m.penaltyA} x {m.penaltyB})</>
-            )}
-            <strong>{m.winner.team}</strong>
-          </li>
-        ))}
-      </ul>
+      <KnockoutPhase
+        title="Semifinais"
+        matches={tournament.semiFinals.matches}
+      />
 
-      <h2 className="phase-title phase-title-final">Final</h2>
-      <ul className="knockout-list knockout-list-final">
-        {tournament.final.matches.map((m, i) => (
-          <li key={i} className="knockout-item knockout-item-final">
-            {m.teamA.team} {m.goalsA} x {m.goalsB} {m.teamB.team}
-            {m.penaltyA !== null && (
-              <> (pênaltis: {m.penaltyA} x {m.penaltyB})</>
-            )}
-            <strong>{m.winner.team}</strong>
-          </li>
-        ))}
-      </ul>
+      <KnockoutPhase
+        title="Final"
+        matches={tournament.final.matches}
+        isFinal={true}
+      />
 
       {tournament.final.winners.length === 1 && (
         <div className="champion-block">
