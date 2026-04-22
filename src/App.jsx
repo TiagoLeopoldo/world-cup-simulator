@@ -14,11 +14,24 @@ import "./App.css";
 function App() {
   const [groups, setGroups] = useState([]);
   const [tournament, setTournament] = useState(null);
+  const [error, setError] = useState(false);
   const resultSent = useRef(false);
 
   useEffect(() => {
     async function runTournament() {
-      const data = await getTeams();
+      let data;
+      try {
+        data = await getTeams();
+      } catch (err) {
+        console.error("Erro ao buscar times:", err);
+        setError(true);
+        return;
+      }
+
+      if (!data || !Array.isArray(data)) {
+        setError(true);
+        return;
+      }
 
       // 1. Grupos
       const generatedGroups = createGroups(data);
@@ -62,6 +75,7 @@ function App() {
     run();
   }, [tournament]);
 
+  if (error) return <p className="loading">Erro ao carregar dados</p>;
   if (!tournament) return <p className="loading">Carregando...</p>;
 
   return (
