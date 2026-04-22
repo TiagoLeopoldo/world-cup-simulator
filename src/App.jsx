@@ -51,7 +51,6 @@ function App() {
 
   useEffect(() => {
     if (!tournament?.final?.winners?.length || resultSent.current) return;
-
     const run = async () => {
       resultSent.current = true;
       await sendFinalResult(tournament.final.matches[0]);
