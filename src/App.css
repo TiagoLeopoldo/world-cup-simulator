@@ -48,21 +48,17 @@
 
 @media (min-width: 768px) {
   .app {
+    padding: 24px;
+  }
+
+  .groups-container {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
-    padding: 24px;
   }
 
   .app-title {
     width: 100%;
     flex-shrink: 0;
   }
-
 }
-
-
-
-
-
-

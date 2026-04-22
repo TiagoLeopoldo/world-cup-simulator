@@ -12,12 +12,16 @@ function App() {
   if (!tournament) return <p className="loading">Carregando...</p>;
 
   return (
-    <div className="app">
-      <h1 className="app-title">Copa do Mundo FIFA 2026</h1>
+    <main className="app">
+      <header>
+        <h1 className="app-title">Copa do Mundo FIFA 2026</h1>
+      </header>
 
-      {groups.map((group) => (
-        <GroupCard key={group.group} group={group} />
-      ))}
+      <section className="groups-container">
+        {groups.map((group) => (
+          <GroupCard key={group.group} group={group} />
+        ))}
+      </section>
 
       <QualifiedList qualifiedTeams={tournament.qualifiedTeams} />
 
@@ -42,7 +46,7 @@ function App() {
       {tournament.final.winners.length === 1 && (
         <ChampionBanner team={tournament.final.winners[0].team} />
       )}
-    </div>
+    </main>
   );
 }
 
